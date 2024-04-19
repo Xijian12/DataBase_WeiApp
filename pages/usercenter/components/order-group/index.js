@@ -10,11 +10,11 @@ Component({
     },
     title: {
       type: String,
-      value: '我的订单',
+      value: '我的维修记录',
     },
     desc: {
       type: String,
-      value: '全部订单',
+      value: '全部记录',
     },
     isTop: {
       type: Boolean,

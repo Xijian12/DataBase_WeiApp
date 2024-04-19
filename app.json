@@ -13,7 +13,9 @@
     "pages/goods/comments/index",
     "pages/goods/comments/create/index",
     "pages/promotion-detail/index",
-    "pages/usercenter/name-edit/index"
+    "pages/usercenter/name-edit/index",
+    "pages/usercenter/address/list/index",
+    "pages/usercenter/address/edit/index"
   ],
   "tabBar": {
     "custom": true,

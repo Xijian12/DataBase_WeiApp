@@ -29,17 +29,10 @@ const menuData = [
 
 const orderTagInfos = [
   {
-    title: '待付款',
+    title: '全部',
     iconName: 'wallet',
     orderNum: 0,
     tabType: 5,
-    status: 1,
-  },
-  {
-    title: '维修中',
-    iconName: 'package',
-    orderNum: 0,
-    tabType: 40,
     status: 1,
   },
   {
@@ -47,6 +40,13 @@ const orderTagInfos = [
     iconName: 'comment',
     orderNum: 0,
     tabType: 60,
+    status: 1,
+  },
+  {
+    title: '维修中',
+    iconName: 'package',
+    orderNum: 0,
+    tabType: 40,
     status: 1,
   },
 ];

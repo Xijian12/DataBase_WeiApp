@@ -18,7 +18,7 @@ export function getGoodsAllComments(params) {
           skuId: '0',
           specInfo: '',
           commentContent:
-            '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+            '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
           commentResources: [
             {
               src: 'https://cdn-we-retail.ym.tencent.com/tsr/goods/nz-08b.png',
@@ -60,7 +60,7 @@ export function getGoodsAllComments(params) {
           skuId: '0',
           specInfo: '',
           commentContent:
-            '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+            '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
           commentResources: [
             {
               src: 'https://cdn-we-retail.ym.tencent.com/tsr/goods/nz-08b.png',
@@ -84,7 +84,7 @@ export function getGoodsAllComments(params) {
           skuId: '0',
           specInfo: '',
           commentContent:
-            '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+            '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
           commentResources: [
             {
               src: 'https://cdn-we-retail.ym.tencent.com/tsr/goods/nz-08b.png',
@@ -114,7 +114,7 @@ export function getGoodsAllComments(params) {
           skuId: '0',
           specInfo: '',
           commentContent:
-            '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+            '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
           commentResources: [
             {
               src: 'https://cdn-we-retail.ym.tencent.com/tsr/goods/nz-08b.png',
@@ -158,7 +158,7 @@ export function getGoodsAllComments(params) {
         skuId: '1697694',
         specInfo: '很不错',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 1,
         uid: '88881048075',
@@ -177,7 +177,7 @@ export function getGoodsAllComments(params) {
         skuId: '1697693',
         specInfo: '很适合',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 1,
         uid: '88881048075',
@@ -196,7 +196,7 @@ export function getGoodsAllComments(params) {
         skuId: '1697694',
         specInfo: 'NICE',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 5,
         uid: '88881048075',
@@ -214,7 +214,7 @@ export function getGoodsAllComments(params) {
         skuId: '0',
         specInfo: '',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 5,
         uid: '88881048075',
@@ -231,7 +231,7 @@ export function getGoodsAllComments(params) {
         skuId: '1697694',
         specInfo: '测试dr超长:dr专用超长;bwtgg01:fff',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 5,
         uid: '88881048075',
@@ -247,7 +247,7 @@ export function getGoodsAllComments(params) {
         skuId: '1697693',
         specInfo: '测试dr超长:超长测试超长测试1;bwtgg01:bbb',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 4,
         uid: '88881048075',
@@ -263,7 +263,7 @@ export function getGoodsAllComments(params) {
         skuId: '1697694',
         specInfo: '测试dr超长:dr专用超长;bwtgg01:fff',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 5,
         uid: '88881048075',
@@ -279,7 +279,7 @@ export function getGoodsAllComments(params) {
         skuId: '1697694',
         specInfo: '测试dr超长:dr专用超长;bwtgg01:fff',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 5,
         uid: '88881048075',
@@ -295,7 +295,7 @@ export function getGoodsAllComments(params) {
         skuId: '1697694',
         specInfo: '测试dr超长:dr专用超长;bwtgg01:fff',
         commentContent:
-          '收到货了，第一时间试了一下，很漂亮特别喜欢，大爱大爱，颜色也很好看。棒棒!',
+          '这家店的汽修技术很好，服务态度也不错，修好的汽车像新的',
         commentImageUrls: null,
         commentScore: 5,
         uid: '88881055835',

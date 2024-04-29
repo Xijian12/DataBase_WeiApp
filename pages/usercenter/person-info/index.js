@@ -8,7 +8,7 @@ import Toast from 'tdesign-miniprogram/toast/index';
 
 Page({
   data: {
-    personInfo: {
+    userInfo: {
       gender: 0,
       account: '',
       password: '',
@@ -38,12 +38,22 @@ Page({
     this.fetchData();
   },
   fetchData() {
-    fetchPerson().then((personInfo) => {
+    // fetchPerson().then((userInfo) => {
+    //   this.setData({
+    //     userInfo,
+    //     'userInfo.phone': phoneEncryption(userInfo.phone),
+    //   });
+    // });
+    const userData = wx.getStorageSync('userData');
+    if (userData) {
       this.setData({
-        personInfo,
-        'personInfo.phone': phoneEncryption(personInfo.phone),
+        userInfo: userData,
       });
-    });
+      console.log("usercenter userInfo:", this.userInfo);
+    } else {
+      console.error('userData is undefined or null');
+    }
+    wx.stopPullDownRefresh(); // 放在数据更新完成后
   },
   onClickCell({
     currentTarget
@@ -53,7 +63,7 @@ Page({
     } = currentTarget;
     const {
       username
-    } = this.data.personInfo;
+    } = this.data.userInfo;
 
     switch (dataset.type) {
       case 'gender':
@@ -85,7 +95,7 @@ Page({
     } = e.detail;
     this.setData({
         typeVisible: false,
-        'personInfo.gender': value,
+        'userInfo.gender': value,
       },
       () => {
         Toast({

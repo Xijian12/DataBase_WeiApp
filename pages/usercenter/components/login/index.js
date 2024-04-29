@@ -126,8 +126,8 @@ Page({
       console.log(userData);
       if (userData.data.account === that.data.account && userData.data.password === that.data.password) {
         // 将用户数据写入本地存储
-        wx.setStorageSync('userData', userData);
-        wx.setStorageSync('setCurrAuthStep', 2)
+        wx.setStorageSync('userData', userData.data);
+        wx.setStorageSync('CurrAuthStep', 2);
         // 提示登录成功
         wx.showToast({
           title: '登录成功',

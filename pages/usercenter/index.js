@@ -52,8 +52,12 @@ const orderTagInfos = [{
 const getDefaultData = () => ({
   showMakePhone: false,
   userInfo: {
+    account: '',
+    password: '',
+    userType: '',
+    username: '请登录',
     avatar: '',
-    username: '正在登录...',
+    email: '',
     phone: '',
   },
   menuData,
@@ -75,11 +79,14 @@ Page({
     });
   },
   onShow() {
-    const loginCurrAuthStep = wx.getStorageSync('setCurrAuthStep');
-    console.log('loginCurrAuthStep:', loginCurrAuthStep);
-    if (loginCurrAuthStep == 2) {
+
+    //使用全局数据管理
+    // const app = getApp();
+    console.log("getStorage CurrAuthStep:", wx.getStorageSync('CurrAuthStep'));
+    console.log("getStorage userData:", wx.getStorageSync('userData'));
+    if (wx.getStorageSync('CurrAuthStep') == 2) {
       this.setData({
-        currAuthStep: 2 // 在页面加载时将 currAuthStep 设置为 1
+        currAuthStep: 2 // 在页面加载时将 currAuthStep 设置为 2
       });
     }
     this.getTabBar().init();
@@ -94,36 +101,48 @@ Page({
     this.fetUseriInfoHandle();
   },
 
+  // fetUseriInfoHandle() {
+  //   fetchUserCenter().then(
+  //     ({
+  //       userInfo,
+  //       countsData,
+  //       orderTagInfos: orderInfo,
+  //       customerServiceInfo,
+  //     }) => {
+  //       // eslint-disable-next-line no-unused-expressions
+  //       menuData?.[0].forEach((v) => {
+  //         countsData.forEach((counts) => {
+  //           if (counts.type === v.type) {
+  //             // eslint-disable-next-line no-param-reassign
+  //             v.tit = counts.num;
+  //           }
+  //         });
+  //       });
+  //       const info = orderTagInfos.map((v, index) => ({
+  //         ...v,
+  //         ...orderInfo[index],
+  //       }));
+  //       this.setData({
+  //         userInfo,
+  //         menuData,
+  //         orderTagInfos: info,
+  //         customerServiceInfo,
+  //       });
+  //       wx.stopPullDownRefresh();
+  //     },
+  //   );
+  // },
   fetUseriInfoHandle() {
-    fetchUserCenter().then(
-      ({
-        userInfo,
-        countsData,
-        orderTagInfos: orderInfo,
-        customerServiceInfo,
-      }) => {
-        // eslint-disable-next-line no-unused-expressions
-        menuData?.[0].forEach((v) => {
-          countsData.forEach((counts) => {
-            if (counts.type === v.type) {
-              // eslint-disable-next-line no-param-reassign
-              v.tit = counts.num;
-            }
-          });
-        });
-        const info = orderTagInfos.map((v, index) => ({
-          ...v,
-          ...orderInfo[index],
-        }));
-        this.setData({
-          userInfo,
-          menuData,
-          orderTagInfos: info,
-          customerServiceInfo,
-        });
-        wx.stopPullDownRefresh();
-      },
-    );
+    const userData = wx.getStorageSync('userData');
+    if (userData) {
+      this.setData({
+        userInfo: userData,
+      });
+      console.log("usercenter userInfo:", this.userInfo);
+    } else {
+      console.error('userData is undefined or null');
+    }
+    wx.stopPullDownRefresh(); // 放在数据更新完成后
   },
   onClickCell({
     currentTarget

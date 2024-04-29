@@ -30,5 +30,10 @@ Component({
     gotoUserEditPage() {
       this.triggerEvent('gotoUserEditPage');
     },
+    gotoLogin() {
+      // console.log('你点击了登录');
+      this.triggerEvent('gotoLogin');
+      console.log('你点击了登录');
+    }
   },
 });

@@ -17,8 +17,16 @@ Page({
     switchChecked: '', // 选中按钮
   },
 
+  // 将方法挂载到 this 对象上
+  toSetcurrAuthStep() {
+    this.setData({
+      currAuthStep: 2
+    });
+  },
+
   onLoad() {
     var _this = this;
+    this.currentPage = this;
     console.log('开始检测。。。');
     if (wx.getStorageSync("checkedValue") == false) {
       _this.setData({
@@ -60,7 +68,6 @@ Page({
 
   // 输入密码（登录界面判断有无）
   password1: function (event) {
-    var that = this
     var m = event.detail.value
     // console.log(event.detail.value)
     if (m != '') {
@@ -109,6 +116,7 @@ Page({
   },
 
   // 登录
+  // 登录成功后返回到上一个页面
   onlogin: function (e) {
     var that = this;
 
@@ -116,23 +124,25 @@ Page({
     fetchUserAccount().then((userData) => {
       // 判断用户输入的账户和密码是否与模拟数据匹配
       console.log(userData);
-      console.log('userData.data.account:', userData.data.account);
-      console.log('that.data.account:', that.data.account);
-      console.log('userData.data.password:', userData.data.password);
-      console.log('that.data.password', that.data.password);
       if (userData.data.account === that.data.account && userData.data.password === that.data.password) {
         // 将用户数据写入本地存储
         wx.setStorageSync('userData', userData);
+        wx.setStorageSync('setCurrAuthStep', 2)
         // 提示登录成功
         wx.showToast({
           title: '登录成功',
           icon: 'success',
           duration: 2000
         });
-        // 跳转到首页或其他页面
-        wx.redirectTo({
-          url: '/pages/home/home',
+        // 登录成功后返回到上一个页面并设置 currAuthStep 为 2
+        wx.navigateBack({
+          delta: 1, // 返回上一个页面
+          success: () => {
+            // 在返回成功后执行父组件的方法
+            this.toSetcurrAuthStep();
+          }
         });
+
       } else {
         // 用户名或密码不匹配，提示登录失败
         wx.showToast({
@@ -151,6 +161,7 @@ Page({
       });
     });
   },
+
 
   // 注册
   formsubmit: function (e) {

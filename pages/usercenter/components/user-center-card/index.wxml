@@ -1,13 +1,19 @@
 <view class="user-center-card">
   <!-- 未登录的情况 -->
   <block wx:if="{{currAuthStep === AuthStepType.ONE}}">
-    <view class="user-center-card__header" bind:tap="gotoUserEditPage">
-      <t-avatar image="{{userInfo.avatar || defaultAvatarUrl}}" class="user-center-card__header__avatar" />
+    <!-- <view class="user-center-card__header" bind:tap="gotoLogin">
+      <t-avatar image="{{defaultAvatarUrl}}" class="user-center-card__header__avatar" />
       <view class="user-center-card__header__name">{{'请登录'}}</view>
+    </view> -->
+    <view class="user-center-card__header">
+      <t-avatar image="{{defaultAvatarUrl}}" class="user-center-card__header__avatar" />
+      <view class="user-center-card__header__name">{{'请登录'}}</view>
+      <!-- 需要授权用户信息，触发gotoLogin事件 -->
+      <view class="user-center-card__header__transparent" bind:tap="gotoLogin"></view>
     </view>
   </block>
   <!-- 已登录但未授权用户信息情况 -->
-  <block wx:if="{{currAuthStep === AuthStepType.TWO}}">
+  <block wx:elif="{{currAuthStep === AuthStepType.TWO}}">
     <view class="user-center-card__header">
       <t-avatar image="{{userInfo.avatar || defaultAvatarUrl}}" class="user-center-card__header__avatar" />
       <view class="user-center-card__header__name">{{userInfo.username || '微信用户'}}</view>
@@ -20,7 +26,7 @@
     </view>
   </block>
   <!-- 已登录且已经授权用户信息的情况 -->
-  <block wx:if="{{currAuthStep === AuthStepType.THREE}}">
+  <block wx:elif="{{currAuthStep === AuthStepType.THREE}}">
     <view class="user-center-card__header" bind:tap="gotoUserEditPage">
       <t-avatar t-class="avatar" mode="aspectFill" class="user-center-card__header__avatar" image="{{userInfo.avatar || defaultAvatarUrl}}" />
       <view class="user-center-card__header__name">{{userInfo.username || '微信用户'}}</view>

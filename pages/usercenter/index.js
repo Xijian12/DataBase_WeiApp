@@ -55,11 +55,11 @@ const getDefaultData = () => ({
     avatar: '',
     username: '正在登录...',
     phone: '',
-    islogin: 0,
   },
   menuData,
   orderTagInfos,
   customerServiceInfo: {},
+  //当前登录状态
   currAuthStep: 1,
   showKefu: true,
   versionNo: '',
@@ -70,10 +70,18 @@ Page({
 
   onLoad() {
     this.getVersionInfo();
-    this.checkLoginStatus(); // 在页面加载时检查登录状态
+    this.setData({
+      currAuthStep: 1 // 在页面加载时将 currAuthStep 设置为 1
+    });
   },
-
   onShow() {
+    const loginCurrAuthStep = wx.getStorageSync('setCurrAuthStep');
+    console.log('loginCurrAuthStep:', loginCurrAuthStep);
+    if (loginCurrAuthStep == 2) {
+      this.setData({
+        currAuthStep: 2 // 在页面加载时将 currAuthStep 设置为 1
+      });
+    }
     this.getTabBar().init();
     this.init();
   },
@@ -112,28 +120,10 @@ Page({
           menuData,
           orderTagInfos: info,
           customerServiceInfo,
-          currAuthStep: 2,
         });
         wx.stopPullDownRefresh();
       },
     );
-  },
-
-  // 检查登录状态的函数
-  checkLoginStatus() {
-    // 获取本地存储的登录状态
-    const islogin = wx.getStorageSync('islogin');
-    // 如果已登录，更新userInfo中的islogin字段为1
-    if (islogin === 1) {
-      this.setData({
-        'userInfo.islogin': 1,
-      });
-    } else {
-      // 如果未登录，跳转到登录页面
-      wx.redirectTo({
-        // url: '/pages/login/login',
-      });
-    }
   },
   onClickCell({
     currentTarget
@@ -228,6 +218,7 @@ Page({
     const {
       currAuthStep
     } = this.data;
+    //console.log('currAuthStep:', currAuthStep);
     if (currAuthStep === 2) {
       wx.navigateTo({
         url: '/pages/usercenter/person-info/index'
@@ -235,6 +226,26 @@ Page({
     } else {
       this.fetUseriInfoHandle();
     }
+  },
+  gotoLogin() {
+    console.log('子组件传递到父组件');
+    const {
+      currAuthStep
+    } = this.data;
+    console.log('currAuthStep:', currAuthStep);
+    if (currAuthStep === 1) {
+      wx.navigateTo({
+        url: '/pages/usercenter/components/login/index'
+      });
+    } else {
+      this.fetUseriInfoHandle();
+    }
+  },
+  toSetcurrAuthStep() {
+    this.setData({
+      currAuthStep: 2
+    })
+    console.log("toSetcurrAuthStep:", currAuthStep);
   },
 
   getVersionInfo() {

@@ -15,7 +15,8 @@
     "pages/promotion-detail/index",
     "pages/usercenter/name-edit/index",
     "pages/usercenter/address/list/index",
-    "pages/usercenter/address/edit/index"
+    "pages/usercenter/address/edit/index",
+    "pages/usercenter/components/login/index"
   ],
   "tabBar": {
     "custom": true,

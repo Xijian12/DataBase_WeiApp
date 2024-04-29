@@ -1,12 +1,14 @@
 const userInfo = {
-  avatarUrl:
-    'https://we-retail-static-1300977798.cos.ap-guangzhou.myqcloud.com/retail-ui/components-exp/avatar/avatar-1.jpg',
-  nickName: 'TDesign 🌟',
-  phoneNumber: '13438358888',
   gender: 2,
+  account: 'xijian12',
+  password: '20021012',
+  userType: 'client',
+  username: '汐渐',
+  avatar: 'https://we-retail-static-1300977798.cos.ap-guangzhou.myqcloud.com/retail-ui/components-exp/avatar/avatar-1.jpg',
+  email: '3146624068@qq.com',
+  phone: '13984760942',
 };
-const countsData = [
-  {
+const countsData = [{
     num: 2,
     name: '积分',
     type: 'point',
@@ -18,8 +20,7 @@ const countsData = [
   },
 ];
 
-const orderTagInfos = [
-  {
+const orderTagInfos = [{
     orderNum: 1,
     tabType: 5,
   },
@@ -42,7 +43,9 @@ const customerServiceInfo = {
   serviceTimeDuration: '每周三至周五 9:00-12:00  13:00-15:00',
 };
 
-export const genSimpleUserInfo = () => ({ ...userInfo });
+export const genSimpleUserInfo = () => ({
+  ...userInfo
+});
 
 export const genUsercenter = () => ({
   userInfo,

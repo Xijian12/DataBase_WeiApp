@@ -1,17 +1,16 @@
-import { fetchUserCenter } from '../../services/usercenter/fetchUsercenter';
+import {
+  fetchUserCenter
+} from '../../services/usercenter/fetchUsercenter';
 import Toast from 'tdesign-miniprogram/toast/index';
 
 const menuData = [
-  [
-    {
-      title: '积分',
-      tit: '',
-      url: '',
-      type: 'point',
-    },
-  ],
-  [
-    {
+  [{
+    title: '积分',
+    tit: '',
+    url: '',
+    type: 'point',
+  }, ],
+  [{
       title: '帮助中心',
       tit: '',
       url: '',
@@ -27,8 +26,7 @@ const menuData = [
   ],
 ];
 
-const orderTagInfos = [
-  {
+const orderTagInfos = [{
     title: '全部',
     iconName: 'wallet',
     orderNum: 0,
@@ -54,9 +52,10 @@ const orderTagInfos = [
 const getDefaultData = () => ({
   showMakePhone: false,
   userInfo: {
-    avatarUrl: '',
-    nickName: '正在登录...',
-    phoneNumber: '',
+    avatar: '',
+    username: '正在登录...',
+    phone: '',
+    islogin: 0,
   },
   menuData,
   orderTagInfos,
@@ -71,12 +70,14 @@ Page({
 
   onLoad() {
     this.getVersionInfo();
+    this.checkLoginStatus(); // 在页面加载时检查登录状态
   },
 
   onShow() {
     this.getTabBar().init();
     this.init();
   },
+
   onPullDownRefresh() {
     this.init();
   },
@@ -118,8 +119,28 @@ Page({
     );
   },
 
-  onClickCell({ currentTarget }) {
-    const { type } = currentTarget.dataset;
+  // 检查登录状态的函数
+  checkLoginStatus() {
+    // 获取本地存储的登录状态
+    const islogin = wx.getStorageSync('islogin');
+    // 如果已登录，更新userInfo中的islogin字段为1
+    if (islogin === 1) {
+      this.setData({
+        'userInfo.islogin': 1,
+      });
+    } else {
+      // 如果未登录，跳转到登录页面
+      wx.redirectTo({
+        // url: '/pages/login/login',
+      });
+    }
+  },
+  onClickCell({
+    currentTarget
+  }) {
+    const {
+      type
+    } = currentTarget.dataset;
 
     switch (type) {
       case 'service': {
@@ -147,7 +168,9 @@ Page({
         break;
       }
       case 'coupon': {
-        wx.navigateTo({ url: '/pages/coupon/coupon-list/index' });
+        wx.navigateTo({
+          url: '/pages/coupon/coupon-list/index'
+        });
         break;
       }
       default: {
@@ -167,34 +190,48 @@ Page({
     const status = e.detail.tabType;
 
     if (status === 0) {
-      wx.navigateTo({ url: '/pages/order/after-service-list/index' });
+      wx.navigateTo({
+        url: '/pages/order/after-service-list/index'
+      });
     } else {
-      wx.navigateTo({ url: `/pages/order/order-list/index?status=${status}` });
+      wx.navigateTo({
+        url: `/pages/order/order-list/index?status=${status}`
+      });
     }
   },
 
   jumpAllOrder() {
-    wx.navigateTo({ url: '/pages/order/order-list/index' });
+    wx.navigateTo({
+      url: '/pages/order/order-list/index'
+    });
   },
 
   openMakePhone() {
-    this.setData({ showMakePhone: true });
+    this.setData({
+      showMakePhone: true
+    });
   },
 
   closeMakePhone() {
-    this.setData({ showMakePhone: false });
+    this.setData({
+      showMakePhone: false
+    });
   },
 
   call() {
     wx.makePhoneCall({
-      phoneNumber: this.data.customerServiceInfo.servicePhone,
+      phone: this.data.customerServiceInfo.servicePhone,
     });
   },
 
   gotoUserEditPage() {
-    const { currAuthStep } = this.data;
+    const {
+      currAuthStep
+    } = this.data;
     if (currAuthStep === 2) {
-      wx.navigateTo({ url: '/pages/usercenter/person-info/index' });
+      wx.navigateTo({
+        url: '/pages/usercenter/person-info/index'
+      });
     } else {
       this.fetUseriInfoHandle();
     }
@@ -202,7 +239,10 @@ Page({
 
   getVersionInfo() {
     const versionInfo = wx.getAccountInfoSync();
-    const { version, envVersion = __wxConfig } = versionInfo.miniProgram;
+    const {
+      version,
+      envVersion = __wxConfig
+    } = versionInfo.miniProgram;
     this.setData({
       versionNo: envVersion === 'release' ? version : envVersion,
     });

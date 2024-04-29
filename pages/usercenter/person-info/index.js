@@ -1,18 +1,25 @@
-import { fetchPerson } from '../../../services/usercenter/fetchPerson';
-import { phoneEncryption } from '../../../utils/util';
+import {
+  fetchPerson
+} from '../../../services/usercenter/fetchPerson';
+import {
+  phoneEncryption
+} from '../../../utils/util';
 import Toast from 'tdesign-miniprogram/toast/index';
 
 Page({
   data: {
     personInfo: {
-      avatarUrl: '',
-      nickName: '',
       gender: 0,
-      phoneNumber: '',
+      account: '',
+      password: '',
+      userType: '',
+      username: '',
+      avatar: '',
+      email: '',
+      phone: '',
     },
     showUnbindConfirm: false,
-    pickerOptions: [
-      {
+    pickerOptions: [{
         name: '男',
         code: '1',
       },
@@ -34,13 +41,19 @@ Page({
     fetchPerson().then((personInfo) => {
       this.setData({
         personInfo,
-        'personInfo.phoneNumber': phoneEncryption(personInfo.phoneNumber),
+        'personInfo.phone': phoneEncryption(personInfo.phone),
       });
     });
   },
-  onClickCell({ currentTarget }) {
-    const { dataset } = currentTarget;
-    const { nickName } = this.data.personInfo;
+  onClickCell({
+    currentTarget
+  }) {
+    const {
+      dataset
+    } = currentTarget;
+    const {
+      username
+    } = this.data.personInfo;
 
     switch (dataset.type) {
       case 'gender':
@@ -50,10 +63,10 @@ Page({
         break;
       case 'name':
         wx.navigateTo({
-          url: `/pages/usercenter/name-edit/index?name=${nickName}`,
+          url: `/pages/usercenter/name-edit/index?name=${username}`,
         });
         break;
-      case 'avatarUrl':
+      case 'avatar':
         this.toModifyAvatar();
         break;
       default: {
@@ -67,9 +80,10 @@ Page({
     });
   },
   onConfirm(e) {
-    const { value } = e.detail;
-    this.setData(
-      {
+    const {
+      value
+    } = e.detail;
+    this.setData({
         typeVisible: false,
         'personInfo.gender': value,
       },
@@ -91,11 +105,16 @@ Page({
           sizeType: ['compressed'],
           sourceType: ['album', 'camera'],
           success: (res) => {
-            const { path, size } = res.tempFiles[0];
+            const {
+              path,
+              size
+            } = res.tempFiles[0];
             if (size <= 10485760) {
               resolve(path);
             } else {
-              reject({ errMsg: '图片大小超出限制，请重新上传' });
+              reject({
+                errMsg: '图片大小超出限制，请重新上传'
+              });
             }
           },
           fail: (err) => reject(err),

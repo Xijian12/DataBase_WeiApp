@@ -1,59 +1,70 @@
 /* pages/login/login.wxss */
-.header{
+.header {
   height: 200rpx;
-  padding:40rpx 30rpx;
+  padding: 40rpx 30rpx;
   display: flex;
   flex-direction: column;
-  background-color:rgb(255, 227, 229);
-  color: rgb(0,0,0);
+  background-color: rgb(255, 227, 229);
+  color: rgb(0, 0, 0);
 }
-.title{
+
+.title {
   font-size: 60rpx;
   font-weight: 700;
   padding: 20rpx;
 }
-.header .info{
-font-size:40rpx ;
-padding: 20rpx;
+
+.header .info {
+  font-size: 40rpx;
+  padding: 20rpx;
 }
-.body{
+
+.body {
   padding: 40rpx;
 }
-.input{
+
+.input {
   margin-top: 20rpx;
 }
-.one{
-height: 100rpx;
-  margin-top: 20rpx;
-  box-shadow: #056901 0 0 5rpx;
+
+.one {
+  height: 100rpx;
+  margin-top: 40rpx;
+  box-shadow: #8a8d8a 0 0 5rpx;
   border-radius: 20rpx;
 }
-.two{
-  border: solid 1rpx #57b676;
+
+.two {
+  border: solid 1rpx #b5dac1;
   margin-top: 40rpx;
   width: 100%;
-  background-color: #73d884;
+  background-color: #b9b9b9;
   border-radius: 40rpx;
 }
-.end{
+
+.end {
   display: flex;
   justify-content: center;
   margin-top: 40rpx;
- color: #45a142;
+  color: #a3a7a3;
 }
-.end text{
-  margin-left:30rpx;
+
+.end text {
+  margin-left: 30rpx;
 }
-.end-power{
+
+.end-power {
   display: flex;
- justify-content: center;
+  justify-content: center;
 }
-.power{
-color: #25a154;
-position: fixed;
-bottom: 50rpx;
+
+.power {
+  color: #9fa5a1;
+  position: fixed;
+  bottom: 50rpx;
 
 }
-.remenber{
+
+.remenber {
   margin-top: 20rpx;
 }

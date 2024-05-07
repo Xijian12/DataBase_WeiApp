@@ -1,6 +1,6 @@
 import {
-  fetchUserAccount
-} from '../../../../services/login/fetchLogin';
+  request
+} from '../../../../utils/request.js';
 
 Page({
   data: {
@@ -27,7 +27,7 @@ Page({
   onLoad() {
     var _this = this;
     this.currentPage = this;
-    console.log('开始检测。。。');
+    var userData = wx.getStorageSync('userData');
     if (wx.getStorageSync("checkedValue") == false) {
       _this.setData({
         account: '',
@@ -38,10 +38,10 @@ Page({
       console.log('无记住密码');
     } else {
       _this.setData({
-        account: wx.getStorageSync("Account"), // 应该是 Account 而不是 iphone
-        password: wx.getStorageSync("password"),
-        switchChecked: wx.getStorageSync('checkedValue'),
-        loginbtnstate: wx.getStorageSync('wxlogin'),
+        username: userData.username,
+        avatar: userData.avatar,
+        email: userData.email,
+        phone: userData.phone
       })
       console.log('记住密码' + _this.data.account + _this.data.password + _this.data.switchChecked)
     }
@@ -119,46 +119,63 @@ Page({
   // 登录成功后返回到上一个页面
   onlogin: function (e) {
     var that = this;
+    // 假设用户输入的账号和密码分别存储在变量 account 和 password 中
 
-    // 调用 fetchUserAccount 函数获取模拟数据
-    fetchUserAccount().then((userData) => {
-      // 判断用户输入的账户和密码是否与模拟数据匹配
-      console.log(userData);
-      if (userData.data.account === that.data.account && userData.data.password === that.data.password) {
-        // 将用户数据写入本地存储
-        wx.setStorageSync('userData', userData.data);
-        wx.setStorageSync('CurrAuthStep', 2);
-        // 提示登录成功
-        wx.showToast({
-          title: '登录成功',
-          icon: 'success',
-          duration: 2000
-        });
-        // 登录成功后返回到上一个页面并设置 currAuthStep 为 2
-        wx.navigateBack({
-          delta: 1, // 返回上一个页面
-          success: () => {
-            // 在返回成功后执行父组件的方法
-            this.toSetcurrAuthStep();
-          }
-        });
+    // 对账号和密码进行编码
+    const encodedAccount = encodeURIComponent(that.data.account);
+    const encodedPassword = encodeURIComponent(that.data.password);
 
-      } else {
-        // 用户名或密码不匹配，提示登录失败
+    // 构建 URL，将编码后的账号和密码放入 URL 中
+    const url = `https://1.95.59.208:8011/common/login?account=${encodedAccount}&password=${encodedPassword}`;
+
+    // 发送请求
+    wx.request({
+      url: url, // 请求的地址
+      method: 'POST', // 请求方法
+      success: function (res) { // 请求成功的回调函数
+        console.log('网路连接成功', res.data);
+        if (res.data.code === 1) {
+          wx.setStorageSync('token', res.data.data);
+          // 发送登录请求示例
+          request('/common/queryInfo', 'GET', {}).then(res => {
+            console.log('请求用户数据成功', res);
+            that.data = res.data
+            console.log("that.data:", that.data);
+            wx.setStorageSync('userData', res.data);
+            wx.setStorageSync('CurrAuthStep', 2);
+            // 提示登录成功
+            wx.showToast({
+              title: '登录成功',
+              icon: 'success',
+              duration: 2000
+            });
+            // 登录成功后返回到上一个页面并设置 currAuthStep 为 2
+            wx.navigateBack({
+              delta: 1, // 返回上一个页面
+            });
+            // 在这里可以处理登录成功后的逻辑
+          }).catch(err => {
+            console.error('请求用户数据失败', err);
+            // 在这里可以处理登录失败后的逻辑
+          });
+        } else {
+          // 用户名或密码不匹配，提示登录失败
+          wx.showToast({
+            title: '用户名或密码错误',
+            icon: 'error',
+            duration: 2000
+          });
+        }
+      },
+      fail: function (err) { // 请求失败的回调函数
+        console.error('网络连接失败', err);
         wx.showToast({
-          title: '用户名或密码错误',
+          title: '登录失败，请稍后重试',
           icon: 'error',
           duration: 2000
         });
+        // 在这里可以处理登录失败后的逻辑
       }
-    }).catch((error) => {
-      // 获取模拟数据失败，提示登录失败
-      console.error('获取模拟数据失败:', error);
-      wx.showToast({
-        title: '登录失败，请稍后重试',
-        icon: 'error',
-        duration: 2000
-      });
     });
   },
 

@@ -49,18 +49,42 @@ const orderTagInfos = [{
   },
 ];
 
+const emporderTagInfos = [{
+    title: '已完成',
+    iconName: 'wallet',
+    orderNum: 0,
+    tabType: 110,
+    status: 1,
+  },
+  {
+    title: '待接单',
+    iconName: 'comment',
+    orderNum: 0,
+    tabType: 120,
+    status: 1,
+  },
+  {
+    title: '已接单',
+    iconName: 'package',
+    orderNum: 0,
+    tabType: 130,
+    status: 1,
+  },
+];
+
 const getDefaultData = () => ({
   showMakePhone: false,
   userInfo: {
     account: '',
     password: '',
-    userType: '',
+    userType: 6,
     username: '请登录',
     avatar: '',
     email: '',
     phone: '',
   },
   menuData,
+  emporderTagInfos,
   orderTagInfos,
   customerServiceInfo: {},
   //当前登录状态
@@ -139,8 +163,6 @@ Page({
         userInfo: userData,
       });
       console.log("usercenter userInfo:", this.userInfo);
-    } else {
-      console.error('userData is undefined or null');
     }
     wx.stopPullDownRefresh(); // 放在数据更新完成后
   },

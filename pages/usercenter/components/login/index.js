@@ -142,6 +142,23 @@ Page({
             that.data = res.data
             console.log("that.data:", that.data);
             wx.setStorageSync('userData', res.data);
+            if (res.data.userType === 6) {
+              request('/client/queryInfo', 'GET', {}).then(res => {
+                wx.setStorageSync('clientData', res.data);
+                console.log("clientData:",  wx.getStorageSync('clientData'));
+              }).catch(err => {
+                console.error('请求客户数据失败', err);
+                // 在这里可以处理登录失败后的逻辑
+              });
+            } else {
+              request('/emp/queryMyInfo', 'GET', {}).then(res => {
+                wx.setStorageSync('empData', res.data);
+                console.log("clientData:",  wx.getStorageSync('empData'));
+              }).catch(err => {
+                console.error('请求员工数据失败', err);
+                // 在这里可以处理登录失败后的逻辑
+              });
+            }
             wx.setStorageSync('CurrAuthStep', 2);
             // 提示登录成功
             wx.showToast({

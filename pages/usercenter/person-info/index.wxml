@@ -1,54 +1,19 @@
 <view class="person-info">
   <t-cell-group>
-    <t-cell
-      title="头像"
-      center="{{true}}"
-      data-type="avatar"
-      bind:click="onClickCell"
-      arrow
-      t-class-left="order-group__left"
-    >
+    <t-cell title="头像" center="{{true}}" data-type="avatar" bind:click="onClickCell" arrow t-class-left="order-group__left">
       <t-image slot="note" src="{{userInfo.avatar}}" t-class="avatar" mode="aspectFill" />
     </t-cell>
-    <t-cell
-      title="昵称"
-      arrow
-      note="{{userInfo.username}}"
-      data-type="name"
-      bind:click="onClickCell"
-      t-class="t-cell-class"
-      t-class-left="order-group__left"
-    />
-    <t-cell
-      title="性别"
-      arrow
-      note="{{genderMap[userInfo.gender]}}"
-      data-type="gender"
-      bind:click="onClickCell"
-      t-class="t-cell-class"
-      t-class-left="order-group__left"
-    />
-    <t-cell
-      bordered="{{false}}"
-      title="手机号"
-      arrow
-      note="{{userInfo.phone ? userInfo.phone : '去绑定手机号'}}"
-      data-type="phone"
-      bind:click="onClickCell"
-      t-class="t-cell-class"
-      t-class-left="order-group__left"
-    />
+    <t-cell title="昵称" arrow note="{{userInfo.username}}" data-type="name" bind:click="onClickCell" t-class="t-cell-class" t-class-left="order-group__left" />
+    <t-cell bordered="{{false}}" title="手机号" note="{{userInfo.phone ? userInfo.phone : '去绑定手机号'}}" data-type="phone" t-class="t-cell-class" t-class-left="order-group__left" />
+    <t-cell wx:if="{{userInfo.userType === 6}}" title="业务手机号" arrow note="{{clientData.businessTele}}" data-type="phone" t-class="t-cell-class" t-class-left="order-group__left" />
+    <t-cell title="账号类型" note="{{const[userInfo.userType]}}" data-type="name" t-class="t-cell-class" t-class-left="order-group__left" />
+    <t-cell wx:if="{{userInfo.userType === 6}}" title="折扣率" note="{{clientData.discountRate}}" data-type="name" t-class="t-cell-class" t-class-left="order-group__left" />
+    <t-cell wx:else title="员工真实姓名" note="{{empData.empName}}" data-type="name" t-class="t-cell-class" t-class-left="order-group__left" />
+
   </t-cell-group>
 </view>
 <view class="person-info__wrapper">
   <view class="person-info__btn" bind:tap="openUnbindConfirm"> 切换账号登录 </view>
 </view>
-<t-select-picker
-  show="{{typeVisible}}"
-  picker-options="{{pickerOptions}}"
-  title="选择性别"
-  value="{{userInfo.gender}}"
-  bind:confirm="onConfirm"
-  bind:close="onClose"
-/>
+<t-select-picker show="{{typeVisible}}" picker-options="{{pickerOptions}}" title="选择性别" value="{{userInfo.gender}}" bind:confirm="onConfirm" bind:close="onClose" />
 <t-toast id="t-toast" />

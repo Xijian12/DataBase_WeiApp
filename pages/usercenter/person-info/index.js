@@ -28,6 +28,9 @@ Page({
         code: '2',
       },
     ],
+    const: ['管理员', '机修', '焊工', '漆工', '前台', '业务员', '客户'],
+    clientData: {},
+    empData: {},
     typeVisible: false,
     genderMap: ['', '男', '女'],
   },
@@ -45,9 +48,13 @@ Page({
     //   });
     // });
     const userData = wx.getStorageSync('userData');
+    const clientData = wx.getStorageSync('clientData');
+    const empData = wx.getStorageSync('empData');
     if (userData) {
       this.setData({
         userInfo: userData,
+        clientData: clientData,
+        empData: empData
       });
       console.log("usercenter userInfo:", this.userInfo);
     } else {

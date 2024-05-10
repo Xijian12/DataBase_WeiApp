@@ -4,6 +4,9 @@ import {
 import {
   phoneEncryption
 } from '../../../utils/util';
+import {
+  logOut
+} from '../../../services/usercenter/logOut'
 import Toast from 'tdesign-miniprogram/toast/index';
 
 Page({
@@ -155,4 +158,10 @@ Page({
       });
     }
   },
+  openUnbindConfirm() {
+    logOut()
+    wx.navigateBack({
+      delta: 1,
+    })
+  }
 });

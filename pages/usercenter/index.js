@@ -1,6 +1,9 @@
 import {
   fetchUserCenter
 } from '../../services/usercenter/fetchUsercenter';
+import {
+  request
+} from '../../utils/request'
 import Toast from 'tdesign-miniprogram/toast/index';
 
 const menuData = [
@@ -103,16 +106,29 @@ Page({
     });
   },
   onShow() {
-
+    console.log("usercenter onShow()")
     //使用全局数据管理
     // const app = getApp();
     console.log("getStorage CurrAuthStep:", wx.getStorageSync('CurrAuthStep'));
     console.log("getStorage userData:", wx.getStorageSync('userData'));
-    if (wx.getStorageSync('CurrAuthStep') == 2) {
+    switch (wx.getStorageSync('CurrAuthStep')) {
+      case 2:
+        this.setData({
+          currAuthStep: 2 // 在页面加载时将 currAuthStep 设置为 2
+        });
+        break;
+      case 1:
+        this.setData(getDefaultData());
+        break;
+
+      default:
+        break;
+    }
+    /*if (wx.getStorageSync('CurrAuthStep') == 2) {
       this.setData({
         currAuthStep: 2 // 在页面加载时将 currAuthStep 设置为 2
       });
-    }
+    } */
     this.getTabBar().init();
     this.init();
   },
@@ -232,6 +248,7 @@ Page({
   },
 
   jumpAllOrder() {
+
     wx.navigateTo({
       url: '/pages/order/order-list/index'
     });

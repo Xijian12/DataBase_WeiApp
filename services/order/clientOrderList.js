@@ -3,7 +3,8 @@ import {
 } from '../../utils/request';
 
 import {
-  genOrders
+  genOrders,
+  realGenOrders
 } from '../../model/order/orderList'
 
 /*import {
@@ -12,7 +13,7 @@ import {
 
 const config = {
   /** 是否使用mock代替api返回 */
-  useMock: true,
+  useMock: false,
 };
 
 /** 获取订单列表mock数据 */
@@ -46,14 +47,14 @@ export function fetchOrders(params) {
     return mockFetchOrders(params);
   }
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     //resolve('real api');
     request('/client/queryMyVehicleFaultInfo', 'GET', {}).then((res) => {
       //wx.setStorageSync('get_order_list_res', res)
       //orderListFullData = res
-      //console.log('then')
+      console.log('fetchOrders() then')
       console.log(res)
-      resolve(genOrders(params))
+      resolve(realGenOrders(res.data, params))
     }).catch((res) => {
       reject(res)
     })
@@ -79,6 +80,7 @@ export function fetchOrdersCount(params) {
   }
 
   return new Promise((resolve) => {
-    resolve('real api');
+    return mockFetchOrdersCount(params)
+    //resolve('real api');
   });
 }

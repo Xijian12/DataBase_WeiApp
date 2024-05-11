@@ -1,10 +1,10 @@
 import {
   OrderStatus
-} from '../../pages/order/client/config';
+} from '../../../pages/order/client/config';
 import {
   mockIp,
   mockReqId
-} from '../../utils/mock';
+} from '../../../utils/mock';
 
 export let orderListFullData = {}
 

@@ -20,7 +20,7 @@
       </view>
       <!--specs-goods-card wx:for="{{order.goodsList}}" wx:key="id" wx:for-item="goods" wx:for-index="gIndex" data="{{goods}}" no-top-line="{{gIndex === 0}}" hiddenInData="true" /-->
       <view slot="more">
-        <view class="price-total">
+        <!--view class="price-total">
           <text>零件费</text>
           <price fill price="{{order.totalAmount + ''}}" />
           <text>，人工费</text>
@@ -28,7 +28,7 @@
           <text decode>&nbsp;</text>
           <text class="bold-price" decode="{{true}}">总计&nbsp;</text>
           <price fill class="real-pay" price="{{order.amount + ''}}" decimalSmaller />
-        </view>
+        </view-->
         <!--view class="price-total">
           <text>零件费</text>
           <price fill price="{{order.totalAmount + ''}}" />

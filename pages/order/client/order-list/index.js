@@ -140,6 +140,7 @@ Page({
         if (res && res.data && res.data.orders) {
           orderList = (res.data.orders || []).map((order) => {
             return {
+              rawData: order,
               id: order.vfi,
               orderNo: order.vfi,
               //parentOrderNo: 0,
@@ -157,7 +158,8 @@ Page({
               //logisticsNo: order.logisticsVO.logisticsNo,
               //createTime: order.createTime,
               goodsList: [{
-                  title: "创建时间：" + order.createTime +
+                  title: "开始时间：" + order.createTime +
+                    "\n车架号：" + order.vin +
                     "\n维修类型：" + (order.maintenanceType === 1 ? "加急" : "普通") +
                     "\n作业分类：" + (order.taskClassification === 0 ? "大型" : (order.taskClassification === 1 ? "中型" : "小型")) +
                     "\n支付方式：" + (order.paymentMethod === 0 ? "自付" : (order.taskClassification === 1 ? "三方" : "索赔")),
@@ -287,9 +289,15 @@ Page({
   },
 
   onOrderCardTap(e) {
+    console.log("onOrderCardTap(e)...")
+    console.log(e)
     const {
       order
     } = e.currentTarget.dataset;
+
+    /*const order_ = this.data.orderList.filter((orderData) => {
+      return orderData.orderNo == order.orderNo
+    })*/
     wx.navigateTo({
       url: `/pages/order/client/order-detail/index?orderNo=${order.orderNo}`,
     });

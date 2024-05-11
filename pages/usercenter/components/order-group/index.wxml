@@ -1,5 +1,6 @@
 <view class="order-group">
   <t-cell-group wx:if="{{isTop}}">
+    <!--t-cell t-class="order-group__top" t-class-left="order-group__left" t-class-title="order-group__top__title" t-class-note="order-group__top__note" title="{{currAuthStep === 1 ? defaultTitle : (userData.userType === 6 ? title : emptitle)}}" note="{{desc}}" bordered="{{false}}" arrow bind:tap="onClickTop" /-->
     <t-cell t-class="order-group__top" t-class-left="order-group__left" t-class-title="order-group__top__title" t-class-note="order-group__top__note" title="{{userData.userType === 6 ? title : emptitle}}" note="{{desc}}" bordered="{{false}}" arrow bind:tap="onClickTop" />
   </t-cell-group>
   <view class="order-group__content">

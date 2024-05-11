@@ -1,11 +1,126 @@
 import {
+  OrderStatus
+} from '../../pages/order/client/config';
+import {
   mockIp,
   mockReqId
 } from '../../utils/mock';
 
 export let orderListFullData = {}
 
+let data = {
+  "rows": [{
+      "createTime": "2024-04-18 23:57:31",
+      "maintenanceType": 0,
+      "paymentMethod": 0,
+      "repairStatus": 1,
+      "taskClassification": 2,
+      "updateTime": "2024-04-18 23:57:33",
+      "vfi": 1,
+      "vin": "1GNSKJKCXFR158903",
+      "whetherPay": 1
+    },
+    {
+      "createTime": "2024-04-25 15:18:01",
+      "maintenanceType": 1,
+      "paymentMethod": 0,
+      "repairStatus": 1,
+      "taskClassification": 2,
+      "updateTime": "2024-04-25 15:35:45",
+      "vfi": 5,
+      "vin": "1GNSKJKCXFR158904",
+      "whetherPay": 1
+    }
+  ],
+  "total": 2
+}
+
 export function genOrders(params) {
+  let resData = data
+  const resp = {
+    data: {
+      pageNum: 1,
+      pageSize: 10,
+      totalCount: resData.total,
+      orders: resData.rows,
+      code: 'Success',
+      msg: null,
+      requestId: mockReqId(),
+      clientIp: mockIp(),
+      rt: 113,
+      success: true,
+    }
+  };
+  for (let order of resp.data.orders) {
+    if (order.repairStatus == 1 && order.whetherPay == 1) {
+      order.orderStatus = OrderStatus.COMPLETE
+      order.orderStatusName = "已完成"
+    } else if (order.repairStatus == 1 && order.whetherPay == 0) {
+      order.orderStatus = OrderStatus.PENDING_PAYMENT
+      order.orderStatusName = "待支付"
+    } else if (order.repairStatus == 0) {
+      order.orderStatus = OrderStatus.PENDING_DELIVERY
+      order.orderStatusName = "维修中"
+    } else {
+      order.orderStatus = OrderStatus.UNKNOWN
+      order.orderStatusName = "未知"
+    }
+
+  }
+  const {
+    pageNum,
+    pageSize,
+    orderStatus
+  } = params.parameter;
+  // 实现筛选
+  if (orderStatus > -1) {
+    resp.data.orders = resp.data.orders.filter(
+      (order) => {
+        /*
+        let returnValue = false;
+        switch (orderStatus) {
+          case OrderStatus.COMPLETE:
+            returnValue = (order.repairStatus == 1 && order.whetherPay == 1)
+            if (returnValue) {
+              order.orderStatus = OrderStatus.COMPLETE
+              order.orderStatusName = "已完成"
+            }
+            return returnValue
+            break;
+          case OrderStatus.PENDING_PAYMENT:
+            returnValue = (order.repairStatus == 1 && order.whetherPay == 0)
+            if (returnValue) {
+              order.orderStatus = OrderStatus.PENDING_PAYMENT
+              order.orderStatusName = "待支付"
+            }
+            return returnValue
+            break;
+          case OrderStatus.PENDING_DELIVERY:
+            returnValue = (order.repairStatus == 0)
+            if (returnValue) {
+              order.orderStatus = OrderStatus.PENDING_DELIVERY
+              order.orderStatusName = "维修中"
+            }
+            return returnValue
+          default:
+            return false
+            break;
+        }*/
+        return order.orderStatus === orderStatus
+      }
+    );
+  }
+  // 实现分页
+  resp.data.pageNum = pageNum;
+  resp.data.pageSize = pageSize;
+  resp.data.orders = resp.data.orders.slice(
+    (pageNum - 1) * pageSize,
+    pageNum * pageSize,
+  );
+  return resp;
+}
+
+export function genOrders____(params) {
   //console.log(orderListFullData)
   const resp = {
     data: {

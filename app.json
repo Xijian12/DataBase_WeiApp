@@ -8,15 +8,17 @@
     "pages/goods/category/index",
     "pages/goods/search/index",
     "pages/goods/result/index",
-    "pages/order/order-list/index",
-    "pages/order/order-detail/index",
     "pages/goods/comments/index",
     "pages/goods/comments/create/index",
     "pages/promotion-detail/index",
     "pages/usercenter/name-edit/index",
     "pages/usercenter/address/list/index",
     "pages/usercenter/address/edit/index",
-    "pages/usercenter/components/login/index"
+    "pages/usercenter/components/login/index",
+    "pages/order/emp/order-list/index",
+    "pages/order/emp/order-detail/index",
+    "pages/order/client/order-detail/index",
+    "pages/order/client/order-list/index"
   ],
   "tabBar": {
     "custom": true,

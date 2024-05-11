@@ -8,6 +8,10 @@ Component({
       type: Array,
       value: [],
     },
+    defaultTitle: {
+      type: String,
+      value: '我的维修/接单记录',
+    },
     title: {
       type: String,
       value: '我的维修记录',
@@ -28,6 +32,10 @@ Component({
       type: String,
       value: 'wr',
     },
+    currAuthStep: {
+      type: Number,
+      value: 1,
+    },
     userData: {
       type: Object,
       value: {
@@ -46,6 +54,12 @@ Component({
       }
     }
   },
+  /*pageLifetimes: {
+    show() {
+      this.properties.CurrAuthStep = Number(wx.getStorageSync('CurrAuthStep'))
+      console.log('Component show')
+    }
+  },*/
   methods: {
     onClickItem(e) {
       this.triggerEvent('onClickItem', e.currentTarget.dataset.item);

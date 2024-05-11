@@ -29,20 +29,50 @@ const menuData = [
   ],
 ];
 
-const orderTagInfos = [{
-    title: '全部',
+const defaultOrderTagInfos = [{
+    title: '已完成',
     iconName: 'wallet',
+    orderNum: 0,
+    tabType: 110,
+    status: 1,
+  },
+  {
+    title: '待评价/待接单',
+    iconName: 'comment',
+    orderNum: 0,
+    tabType: 120,
+    status: 1,
+  },
+  {
+    title: '维修中/已接单',
+    iconName: 'package',
+    orderNum: 0,
+    tabType: 130,
+    status: 1,
+  },
+];
+
+const orderTagInfos = [{
+    title: '已完成',
+    iconName: 'wallet',
+    orderNum: 0,
+    tabType: 50,
+    status: 1,
+  },
+  {
+    title: '待支付',
+    iconName: 'comment',
     orderNum: 0,
     tabType: 5,
     status: 1,
   },
-  {
-    title: '待评价',
+  /*{
+    title: '待维修',
     iconName: 'comment',
     orderNum: 0,
-    tabType: 60,
+    tabType: 10,
     status: 1,
-  },
+  },*/
   {
     title: '维修中',
     iconName: 'package',
@@ -76,6 +106,19 @@ const emporderTagInfos = [{
 ];
 
 const getDefaultData = () => ({
+  /*
+  pending
+  0: 无待执行任务
+  1: 待执行jumpAllOrder()
+  2: 待执行jumpNav()
+  */
+  pending: {
+    status: false,
+    exec: (args) => {},
+    //func: () => {},
+    args: [],
+  },
+  //jumpNavData: undefined,
   showMakePhone: false,
   userInfo: {
     account: '',
@@ -87,6 +130,7 @@ const getDefaultData = () => ({
     phone: '',
   },
   menuData,
+  defaultOrderTagInfos,
   emporderTagInfos,
   orderTagInfos,
   customerServiceInfo: {},
@@ -106,6 +150,9 @@ Page({
     });
   },
   onShow() {
+    if (this.data.pending.status) {
+      this.data.pending.exec(this.data.pending.args)
+    }
     console.log("usercenter onShow()")
     //使用全局数据管理
     // const app = getApp();
@@ -232,25 +279,78 @@ Page({
       }
     }
   },
-
+  clearPending() {
+    this.setData({
+      pending: {
+        status: false,
+        exec: (args) => {},
+        //func: () => {},
+        args: [],
+      }
+    })
+  },
+  setPending(exec, args) {
+    this.setData({
+      pending: {
+        status: true,
+        exec: exec,
+        //func: () => {},
+        args: args,
+      }
+    })
+  },
+  checkLogin() {
+    if (wx.getStorageSync('CurrAuthStep') == 2) {
+      return true
+    } else {
+      return false
+    }
+  },
   jumpNav(e) {
-    const status = e.detail.tabType;
+    if (!this.checkLogin()) {
+      this.setPending((args) => {
+        this.clearPending()
+        if (wx.getStorageSync('CurrAuthStep') == 2) {
+          let userData = wx.getStorageSync('userData')
+          if (userData.userType == 6) {
+            this.jumpNav(args[0])
+          }
 
+        }
+      }, [e])
+      this.gotoLogin()
+    }
+    const status = e.detail.tabType;
+    let userData = wx.getStorageSync('userData')
+    let baseUrl = (userData.userType == 6) ? '/pages/order/client/order-list/index' : '/pages/order/emp/order-list/index'
     if (status === 0) {
       wx.navigateTo({
         url: '/pages/order/after-service-list/index'
       });
     } else {
       wx.navigateTo({
-        url: `/pages/order/order-list/index?status=${status}`
+        url: baseUrl + `?status=${status}`
       });
     }
   },
 
   jumpAllOrder() {
-
+    if (!this.checkLogin()) {
+      this.setPending((args) => {
+        this.clearPending()
+        if (wx.getStorageSync('CurrAuthStep') == 2) {
+          this.jumpAllOrder()
+        }
+      }, [])
+      this.gotoLogin()
+    }
+    /*if (!this.checkLogin()) {
+      return
+    }*/
+    let userData = wx.getStorageSync('userData')
+    let baseUrl = (userData.userType == 6) ? '/pages/order/client/order-list/index' : '/pages/order/emp/order-list/index'
     wx.navigateTo({
-      url: '/pages/order/order-list/index'
+      url: baseUrl
     });
   },
 

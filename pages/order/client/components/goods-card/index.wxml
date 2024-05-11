@@ -19,7 +19,20 @@
 		</view>
 
 		<view class="wr-goods-card__body">
-			<view class="wr-goods-card__long_content">
+      <view class="wr-goods-card__long_content">
+				<view wx:if="{{ goods.title && !goods.hideKey.title }}" class="wr-goods-card__title title-class" style="-webkit-line-clamp: {{ goods.lineClamp }};">
+					<slot name="before-title" />
+					{{ goods.title }}
+				</view>
+				<slot name="after-title" />
+				<view wx:if="{{ goods.desc && !goods.hideKey.desc }}" class="wr-goods-card__desc desc-class">{{ goods.desc }}</view>
+				<slot name="after-desc" />
+				<view wx:if="{{ goods.specs && goods.specs.length > 0 && !goods.hideKey.specs }}" class="wr-goods-card__specs__desc specs-class" bind:tap="clickSpecsHandle">
+					<view class="wr-goods-card__specs__desc-text">{{ goods.specs }}</view>
+				</view>
+				<!--view class="goods_tips" wx:if="{{goods.stockQuantity !== 0 && goods.quantity >= goods.stockQuantity}}">库存不足</view-->
+			</view>
+			<!--view class="wr-goods-card__long_content">
 				<view wx:if="{{ goods.title && !goods.hideKey.title }}" class="wr-goods-card__title title-class" style="-webkit-line-clamp: {{ goods.lineClamp }};">
 					<slot name="before-title" />
 					{{ goods.title }}
@@ -31,7 +44,7 @@
 					<view class="wr-goods-card__specs__desc-text">{{ goods.specs }}</view>
 				</view>
 				<view class="goods_tips" wx:if="{{goods.stockQuantity !== 0 && goods.quantity >= goods.stockQuantity}}">库存不足</view>
-			</view>
+			</view-->
 
 			<view class="wr-goods-card__short_content">
 				<block wx:if="{{goods.stockQuantity !== 0}}">

@@ -4,10 +4,10 @@ import {
 import {
   fetchOrders,
   fetchOrdersCount,
-} from '../../../services/order/orderList';
+} from '../../../../services/order/clientOrderList';
 import {
   cosThumb
-} from '../../../utils/util';
+} from '../../../../utils/util';
 
 Page({
   page: {
@@ -17,18 +17,24 @@ Page({
 
   data: {
     // 订单页面的导航
+    noRecordHeight: "300rpx",
     tabs: [{
         key: -1,
         text: '全部'
       },
       {
-        key: OrderStatus.PENDING_RECEIPT,
-        text: '维修中',
+        key: OrderStatus.COMPLETE,
+        text: '已完成',
         info: ''
       },
       {
-        key: OrderStatus.COMPLETE,
-        text: '已完成',
+        key: OrderStatus.PENDING_PAYMENT,
+        text: '待支付',
+        info: ''
+      },
+      {
+        key: OrderStatus.PENDING_RECEIPT,
+        text: '维修中',
         info: ''
       },
     ],
@@ -46,6 +52,22 @@ Page({
     status = this.data.tabs.map((t) => t.key).includes(status) ? status : -1;
     this.init(status);
     this.pullDownRefresh = this.selectComponent('#wr-pull-down-refresh');
+    let height = 0;
+    /*wx.createSelectorQuery().selectAll('.npl-intro').boundingClientRect(function (rect) {
+      console.log(rect[0].height)
+      console.log(rect[0].width)
+      height = rect[0].height
+    }).exec()*/
+    // 获取系统信息
+    //const ratio = wx.getSystemInfoSync().screenHeight 
+    const systemInfo = wx.getSystemInfoSync();
+    // 获取屏幕高度
+    const screenHeight = systemInfo.windowHeight;
+    //height = screenHeight - wx.getMenuButtonBoundingClientRect().height - 
+    this.setData({
+      noRecordHeight: Math.round(screenHeight / 1.5).toString() + "px",
+      //noRecordHeight: height.toString() + "px",
+    })
   },
 
   onShow() {
@@ -96,6 +118,10 @@ Page({
     this.refreshList(status);
   },
 
+  genListItem() {
+    return
+  },
+
   getOrderList(statusCode = -1, reset = false) {
     const params = {
       parameter: {
@@ -114,17 +140,58 @@ Page({
         if (res && res.data && res.data.orders) {
           orderList = (res.data.orders || []).map((order) => {
             return {
-              id: order.orderId,
-              orderNo: order.orderNo,
+              id: order.vfi,
+              orderNo: order.vfi,
+              //parentOrderNo: 0,
+              //storeId: 0,
+              //storeName: order.createTime,
+              /*
               parentOrderNo: order.parentOrderNo,
               storeId: order.storeId,
               storeName: order.storeName,
+              */
               status: order.orderStatus,
               statusDesc: order.orderStatusName,
-              amount: order.paymentAmount,
-              totalAmount: order.totalAmount,
-              logisticsNo: order.logisticsVO.logisticsNo,
-              createTime: order.createTime,
+              //amount: order.paymentAmount,
+              //totalAmount: order.totalAmount,
+              //logisticsNo: order.logisticsVO.logisticsNo,
+              //createTime: order.createTime,
+              goodsList: [{
+                  title: "创建时间：" + order.createTime +
+                    "\n维修类型：" + (order.maintenanceType === 1 ? "加急" : "普通") +
+                    "\n作业分类：" + (order.taskClassification === 0 ? "大型" : (order.taskClassification === 1 ? "中型" : "小型")) +
+                    "\n支付方式：" + (order.paymentMethod === 0 ? "自付" : (order.taskClassification === 1 ? "三方" : "索赔")),
+                },
+                /*
+                {
+                  title: "维修类型：" + (order.maintenanceType === 1 ? "加急" : "普通"),
+                  specs: [],
+                },
+                {
+                  title: "作业分类：" + (order.taskClassification === 0 ? "大型" : (order.taskClassification === 1 ? "中型" : "小型")),
+                  specs: [],
+                },
+                {
+                  title: "支付方式：" + (order.paymentMethod === 0 ? "自付" : (order.taskClassification === 1 ? "三方" : "索赔")),
+                  specs: [],
+                },*/
+              ],
+
+              /*
+              goodsList: [{
+                title: order.createTime,
+                //lineClamp: 3,
+                //title: "车架号：" + order.vin,
+                //skuId: 100,
+                //spuId: 200,
+                specs: [
+                  "车架号：" + order.vin,
+                  "维修类型：" + (order.maintenanceType === 1 ? "加急" : "普通"),
+                  "作业分类：" + (order.taskClassification === 0 ? "大型" : (order.taskClassification === 1 ? "中型" : "小型")),
+                  "支付方式：" + (order.paymentMethod === 0 ? "自付" : (order.taskClassification === 1 ? "三方" : "索赔")),
+                ],
+              }]*/
+              /*
               goodsList: (order.orderItemVOs || []).map((goods) => ({
                 id: goods.id,
                 thumb: cosThumb(goods.goodsPictureUrl, 70),
@@ -139,10 +206,10 @@ Page({
                 titlePrefixTags: goods.tagText ? [{
                   text: goods.tagText
                 }] : [],
-              })),
-              buttons: order.buttonVOs || [],
-              groupInfoVo: order.groupInfoVo,
-              freightFee: order.freightFee,
+              })),*/
+              //buttons: order.buttonVOs || [],
+              //groupInfoVo: order.groupInfoVo,
+              //freightFee: order.freightFee,
             };
           });
         }
@@ -224,7 +291,7 @@ Page({
       order
     } = e.currentTarget.dataset;
     wx.navigateTo({
-      url: `/pages/order/order-detail/index?orderNo=${order.orderNo}`,
+      url: `/pages/order/client/order-detail/index?orderNo=${order.orderNo}`,
     });
   },
 });

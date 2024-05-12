@@ -1,2 +1,308 @@
-<!--pages/order/emp/order-detail/index.wxml-->
-<text>pages/order/emp/order-detail/index.wxml</text>
+<t-pull-down-refresh id="t-pull-down-refresh" bindrefresh="onPullDownRefresh_" t-class-indicator="t-class-indicator">
+  <!-- 页面内容 -->
+  <view class="order-detail">
+    <view class="header">
+      <view class="order-detail__header">
+        <view class="title">{{_order.statusDesc}}</view>
+      </view>
+
+      <!-- 物流
+      <view class="order-logistics" wx:if="{{logisticsNodes[0]}}" bindtap="onDeliveryClick">
+        <t-icon name="deliver" size="40rpx" class="logistics-icon" prefix="wr" />
+        <view class="logistics-content">
+          <view>{{logisticsNodes[0].desc}}</view>
+          <view class="logistics-time">{{logisticsNodes[0].date}}</view>
+        </view>
+        <t-icon class="logistics-back" name="arrow_forward" size="36rpx" prefix="wr" />
+      </view> -->
+
+      <!--view class="border-bottom" wx:if="{{logisticsNodes[0]}}" /-->
+      <!-- 收货地址 -->
+      <!--view class="order-logistics">
+        <t-icon name="location" size="40rpx" class="logistics-icon" prefix="wr" />
+        <view class="logistics-content">
+          <view>{{order.logisticsVO.receiverName + ' '}}{{order.logisticsVO.receiverPhone}}</view>
+          <view class="logistics-time">{{_order.receiverAddress}}</view>
+        </view>
+        <view wx:if="{{addressEditable}}" class="edit-text" bindtap="onEditAddressTap"> 修改 </view>
+      </view-->
+    </view>
+    <!-- 店铺及商品 -->
+    <view class="padding-inline">
+    <!--order-card order="{{_order}}" use-top-right-slot>
+      <order-goods-card wx:for="{{_order.goodsList}}" wx:key="id" wx:for-item="goods" wx:for-index="gIndex" goods="{{goods}}" no-top-line="{{gIndex === 0}}" bindtap="onGoodsCardTap" data-index="{{gIndex}}">
+        <order-button-bar slot="append-card" class="goods-button-bar" order="{{_order}}" bindrefresh="onRefresh" goodsIndex="{{gIndex}}" />
+      </order-goods-card-->
+      
+      <!--me-->
+      <view class="pay-detail">
+        <!--view class="pay-item">
+          <text>故障单号</text>
+          <text class="pay-item__right font-bold">{{1}}</text-->
+          <!--price fill wr-class="pay-item__right font-bold" price="{{order.totalAmount || '0'}}" /-->
+        <!--/view-->
+        <view class="pay-item">
+          <text>开始时间</text>
+          <text class="pay-item__right font-bold">{{_order.createTime}}</text>
+        </view>
+        <view class="pay-item">
+          <text>车架号</text>
+          <text class="pay-item__right font-bold">{{_order.vin}}</text>
+        </view>
+        <view class="pay-item">
+          <text>维修类型</text>
+          <text class="pay-item__right font-bold">{{_order.maintenanceType}}</text>
+        </view>
+        <view class="pay-item">
+          <text>作业分类</text>
+          <text class="pay-item__right font-bold">{{_order.taskClassification}}</text>
+        </view>
+        <view class="pay-item">
+          <text>支付方式</text>
+          <text class="pay-item__right font-bold">{{_order.paymentMethod}}</text>
+        </view>
+        <!--view class="pay-item">
+          <text>运费</text>
+          <view class="pay-item__right font-bold">
+            <block wx:if="{{order.freightFee}}">
+              +
+              <price fill decimalSmaller price="{{order.freightFee}}" />
+            </block>
+            <text wx:else>免运费</text>
+          </view>
+        </view>
+        <view class="pay-item">
+          <text>活动优惠</text>
+          <view class="pay-item__right primary font-bold">
+            -
+            <price fill price="{{order.discountAmount || 0}}" />
+          </view>
+        </view>
+        <view class="pay-item">
+          <text>优惠券</text>
+          <view class="pay-item__right" catchtap="onOpenCoupons">
+            <block wx:if="{{order.couponAmount}}">
+              -
+              <price fill decimalSmaller price="{{order.couponAmount}}" />
+            </block>
+            <text wx:else>无可用</text-->
+            <!-- <t-icon name="chevron-right" size="32rpx" color="#BBBBBB" /> -->
+          <!--/view>
+        </view>
+        <view class="pay-item">
+          <text>{{isPaid ? '实付' : '应付'}}</text>
+          <price fill decimalSmaller wr-class="pay-item__right font-bold primary max-size" price="{{order.paymentAmount || '0'}}" />
+        </view-->
+      </view>
+      <!--me-->
+    
+    <!--/order-card-->
+    </view>
+
+    <view style="width: 100%; height: 72rpx; display: flex; align-items: center; justify-content: center;font-size: 32rpx; line-height: 36rpx;">
+      <text class="padding-inline" style="width: 100%; font-size: medium; text-align: left;">维修委托书</text>
+    </view>
+
+    <view wx:if="{{_order.repairAuthorization}}" class="pay-detail padding-inline">
+      <view class="pay-item">
+        <text>故障单号</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.vfi}}</text>
+      </view>
+      <view class="pay-item">
+        <text>车主ID</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.clientId}}</text>
+      </view>
+      <view class="pay-item">
+        <text>经办人ID</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.empId}}</text>
+      </view>
+      <view class="pay-item">
+        <text>车辆行驶里程</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.mileage + " km"}}</text>
+      </view>
+      <view class="pay-item">
+        <text>随车物品</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.onboardItems}}</text>
+      </view>
+      <view class="pay-item">
+        <text>检查结果</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.checkResult}}</text>
+      </view>
+      <view class="pay-item">
+        <text>维修方案</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.repairMethod}}</text>
+      </view>
+      <view class="pay-item">
+        <text>是否洗车</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.isWashCar == 1 ? '是' : '否'}}</text>
+      </view>
+      <view class="pay-item">
+        <text>旧件是否带回</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.isGetFormerComponent == 1 ? '是' : '否'}}</text>
+      </view>
+      <view class="pay-item">
+        <text>维修总费用</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.totalRepairCost}}</text>
+      </view>
+      <view class="pay-item">
+        <text>开始日期</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.createTime}}</text>
+      </view>
+      <view class="pay-item">
+        <text>预计交付日期</text>
+        <text class="pay-item__right">{{_order.repairAuthorization.estDelivTime}}</text>
+      </view>
+    </view>
+    <view wx:else class="pay-detail padding-inline">
+      <view class="pay-item">
+        <text>暂无维修委托书</text>
+      </view>
+    </view>
+
+    <view style="width: 100%; height: 72rpx; display: flex; align-items: center; justify-content: center;font-size: 32rpx; line-height: 36rpx;">
+      <text class="padding-inline" style="width: 100%; font-size: medium; text-align: left;">维修详情</text>
+    </view>
+
+    <view wx:if="{{_order.repairTaskList.length > 0}}">
+      <view class="pay-detail padding-inline">
+        <view class="pay-item">
+          <text>维修项目总数</text>
+          <text class="pay-item__right">{{_order.repairTaskList.length}}</text>
+        </view>
+        <view class="pay-item">
+          <text>已完成项目数</text>
+          <text class="pay-item__right">{{_order.finishedTaskNum}}</text>
+        </view>
+      </view>
+      <view wx:for="{{_order.repairTaskList}}" wx:key="rrid">
+        <view style="font-size: 26rpx; line-height: 36rpx; width: 100%; display: flex; align-items: center; justify-content: center;">
+          <text class="padding-inline font-bold" style="font-size: 30rpx; width: 100%; text-align: left;">维修项目{{item.riid}}</text>
+        </view>
+        <view class="pay-detail padding-inline">
+          <view class="pay-item">
+            <text class="font-bold">{{item.repairItem}}</text>
+          </view>
+          <view class="pay-item">
+            <text>所需零件</text>
+            <text class="pay-item__right">{{item.needComponent}}</text>
+          </view>
+          <view class="pay-item">
+            <text>零件单价</text>
+            <text class="pay-item__right">{{item.pricePerComponent}}</text>
+          </view>
+          <view class="pay-item">
+            <text>零件总金额</text>
+            <text class="pay-item__right">{{item.totalComponentPrice}}</text>
+          </view>
+          <view class="pay-item">
+            <text>创建时间</text>
+            <text class="pay-item__right">{{item.createTime}}</text>
+          </view>
+          <view class="pay-item">
+            <text>更新时间</text>
+            <text class="pay-item__right">{{item.updateTime}}</text>
+          </view>
+          <view class="pay-item">
+            <text>是否完成</text>
+            <text class="pay-item__right">{{item.isComplete == 1 ? '是' : '否'}}</text>
+          </view>
+          <view class="pay-item">
+            <text class="font-bold">派工单信息</text>
+          </view>
+          <block wx:for="{{_order.riidTomdoidMap[item.riid]}}" wx:key="mdoid">
+            <view class="pay-item">
+              <text class="font-bold">派工单ID</text>
+              <text class="pay-item__right font-bold">{{item.mdoid}}</text>
+            </view>
+            <view class="pay-item">
+              <text>工时</text>
+              <text class="pay-item__right">{{item.workLength}}</text>
+            </view>
+            <view class="pay-item">
+              <text>工时单价</text>
+              <text class="pay-item__right">{{item.pricePerhour}}</text>
+            </view>
+            <view class="pay-item">
+              <text>维修员编号</text>
+              <text class="pay-item__right">{{item.empId}}</text>
+            </view>
+            <view class="pay-item">
+              <text>维修员类型</text>
+              <!--text class="pay-item__right">{{item.empType == 5 ? '业务员' : (
+                item.empType == 4 ? '前台' : (
+                  item.empType == 3 ? '漆工' : (
+                    item.empType == 2 ? '焊工' : (
+                      item.empType == 1 ? '机修' : '经理/管理员'
+                    )
+                  )
+                )
+              )}}</text-->
+              <text class="pay-item__right">{{item.empType == 5 ? '业务员' : (
+                item.empType == 4 ? '漆工' : (
+                  item.empType == 3 ? '焊工' : (
+                    item.empType == 2 ? '机修' : (
+                      item.empType == 1 ? '前台' : '经理/管理员'
+                    )
+                  )
+                )
+              )}}</text>
+            </view>
+            <view class="pay-item">
+              <text>是否完成</text>
+              <text class="pay-item__right">{{item.isComplete == 1 ? '是' : '否'}}</text>
+            </view>
+          </block>
+          
+        </view>
+
+      </view>
+    </view>
+    <view wx:else class="pay-detail padding-inline">
+      <view class="pay-item">
+        <text>暂无维修详情</text>
+      </view>
+    </view>
+
+
+
+    <!--view class="pay-detail padding-inline">
+      <view class="pay-item">
+        <text>订单编号</text>
+        <view class="pay-item__right" bindtap="onOrderNumCopy">
+          <text class="order-no">{{order.orderNo}}</text>
+          <view class="pay-item__right__copy">复制</view>
+        </view>
+      </view>
+      <view class="pay-item">
+        <text>下单时间</text>
+        <view class="pay-item__right">
+          <text class="order-no normal-color">{{formatCreateTime}}</text>
+        </view>
+      </view>
+      <view class="border-bottom border-bottom-margin" />
+      <view class="pay-item">
+        <text>发票</text>
+        <view class="pay-item__right" bindtap="onOrderInvoiceView">
+          <text class="order-no normal-color">{{invoiceType}}</text>
+          <view class="pay-item__right__copy">查看</view>
+        </view>
+      </view>
+      <view class="pay-item">
+        <text>备注</text>
+        <view class="pay-item__right">
+          <text class="order-no normal-color">{{order.remark || '-'}}</text>
+        </view>
+      </view>
+      <view class="border-bottom border-bottom-margin" />
+      <view class="pay-service" wx:if="{{storeDetail && storeDetail.storeTel}}" catch:tap="clickService">
+        <t-icon name="service" size="40rpx" />
+        <text decode="{{true}}">&nbsp;联系客服</text>
+      </view>
+    </view-->
+  </view>
+  <view wx:if="{{_order.buttons.length > 0}}" class="bottom-bar">
+    <order-button-bar order="{{_order}}" bindrefresh="onRefresh" isBtnMax />
+  </view>
+</t-pull-down-refresh>
+<t-toast id="t-toast" />
+<t-dialog id="t-dialog" />

@@ -90,14 +90,14 @@ const emporderTagInfos = [{
     status: 1,
   },
   {
-    title: '待接单',
+    title: '未受理',
     iconName: 'comment',
     orderNum: 0,
     tabType: 120,
     status: 1,
   },
   {
-    title: '已接单',
+    title: '已受理',
     iconName: 'package',
     orderNum: 0,
     tabType: 130,

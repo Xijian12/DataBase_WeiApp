@@ -28,11 +28,11 @@ function mockFetchOrders(params) {
   })*/
   console.log('genOrders...')
   return new Promise((resolve, reject) => {
-    request('/client/queryMyVehicleFaultInfo', 'GET', {}).then((res) => {
+    request('/emp/empQueryOnGoingTable', 'GET', {}).then((res) => {
       //wx.setStorageSync('get_order_list_res', res)
       //orderListFullData = res
       //console.log('then')
-      console.log(res)
+      console.log('empQueryOnGoingTable', res)
       resolve(genOrders(params))
     }).catch((res) => {
       reject(res)

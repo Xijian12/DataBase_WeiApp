@@ -18,7 +18,8 @@
     "pages/order/emp/order-list/index",
     "pages/order/emp/order-detail/index",
     "pages/order/client/order-detail/index",
-    "pages/order/client/order-list/index"
+    "pages/order/client/order-list/index",
+    "pages/usercenter/components/receive-order/index"
   ],
   "tabBar": {
     "custom": true,

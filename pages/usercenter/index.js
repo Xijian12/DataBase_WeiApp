@@ -399,6 +399,11 @@ Page({
       this.fetUseriInfoHandle();
     }
   },
+  onClickReOrder() {
+    wx.navigateTo({
+      url: '/pages/usercenter/components/receive-order/index'
+    });
+  },
   toSetcurrAuthStep() {
     this.setData({
       currAuthStep: 2

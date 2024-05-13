@@ -5,7 +5,12 @@
     <t-order-group wx:if="{{userInfo.userType === 6}}" orderTagInfos="{{orderTagInfos}}" bind:onClickTop="jumpAllOrder" bind:onClickItem="jumpNav" />
     <t-order-group wx:else orderTagInfos="{{emporderTagInfos}}" bind:onClickTop="jumpAllOrder" bind:onClickItem="jumpNav" />
   </view>
-
+  <view>
+    <t-cell-group wx:if="{{userInfo.userType === 2}}">
+      <t-cell title="接单大厅" arrow bordered="{{false}}" bind:click="onClickReOrder" t-class="t-cell-padding" t-class-note="order-group-note" t-class-left="order-group__left">
+      </t-cell>
+    </t-cell-group>
+  </view>
   <view wx:for="{{menuData}}" wx:key="item" class="cell-box">
     <t-cell-group>
       <t-cell wx:for="{{item}}" wx:for-item="xitem" wx:for-index="xindex" wx:key="xindex" title="{{xitem.title}}" arrow="{{!xitem.icon}}" note="{{xitem.tit}}" data-type="{{xitem.type}}" bordered="{{false}}" bind:click="onClickCell" t-class="t-cell-padding" t-class-note="order-group-note" t-class-left="order-group__left">

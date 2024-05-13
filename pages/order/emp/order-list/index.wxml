@@ -7,9 +7,8 @@
   </view>
   <t-pull-down-refresh id="pull-down-refresh" normal-bar-height="{{200}}" max-bar-height="{{272}}" refreshTimeout="{{3000}}" background="#f5f5f5" use-loading-slot loading-size="60rpx" bindrefresh="onPullDownRefresh_" t-class-indicator="t-class-indicator">
 
-    <order-card wx:for="{{orderList}}" wx:key="id" wx:for-item="order" wx:for-index="oIndex" order="{{order}}" defaultShowNum="{{3}}" data-order="{{order}}" bindcardtap="onOrderCardTap" useLogoSlot>
-      <view slot="top-left" class="order-number">
-      </view>
+    <order-card wx:for="{{orderList}}" wx:key="id" wx:for-item="order" wx:for-index="oIndex" order="{{order}}" defaultShowNum="{{3}}" data-order="{{order}}" useLogoSlot>
+      <view slot="top-left" class="order-number"></view>
       <!--view slot="top-right">
         <text>{{order.statusDesc}}</text>
       </view-->
@@ -18,6 +17,24 @@
       </view>
       <!-- 订单按钮栏 -->
       <order-button-bar order="{{order}}" bindrefresh="onRefresh" data-order="{{order}}" />
+
+      <!-- 未受理状态下的按钮容器 -->
+      <view class="button-container" wx:if="{{order.status === 0}}">
+        <!-- 受理按钮 -->
+        <button class="accept-button" bindtap="onAccept" data-order="{{order}}">受理</button>
+
+        <!-- 拒绝按钮 -->
+        <button class="reject-button" bindtap="onReject" data-order="{{order}}">拒绝</button>
+      </view>
+
+      <!-- 已受理状态下的按钮容器 -->
+      <view class="button-container" wx:if="{{order.status === 1}}">
+        <!-- 完成按钮 -->
+        <button class="accept-button" bindtap="onComplete" data-order="{{order}}">维修完成</button>
+        <!-- 拒绝按钮 -->
+        <button class="reject-button" bindtap="onReject" data-order="{{order}}">拒绝</button>
+      </view>
+
     </order-card>
     <!-- 列表加载中/已全部加载 -->
     <load-more wx:if="{{!pullDownRefreshing}}" list-is-empty="{{!orderList.length}}" status="{{listLoading}}" bindretry="onReTryLoad">

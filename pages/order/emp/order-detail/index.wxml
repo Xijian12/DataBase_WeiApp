@@ -29,17 +29,17 @@
     </view>
     <!-- 店铺及商品 -->
     <view class="padding-inline">
-    <!--order-card order="{{_order}}" use-top-right-slot>
+      <!--order-card order="{{_order}}" use-top-right-slot>
       <order-goods-card wx:for="{{_order.goodsList}}" wx:key="id" wx:for-item="goods" wx:for-index="gIndex" goods="{{goods}}" no-top-line="{{gIndex === 0}}" bindtap="onGoodsCardTap" data-index="{{gIndex}}">
         <order-button-bar slot="append-card" class="goods-button-bar" order="{{_order}}" bindrefresh="onRefresh" goodsIndex="{{gIndex}}" />
       </order-goods-card-->
-      
+
       <!--me-->
       <view class="pay-detail">
         <!--view class="pay-item">
           <text>故障单号</text>
           <text class="pay-item__right font-bold">{{1}}</text-->
-          <!--price fill wr-class="pay-item__right font-bold" price="{{order.totalAmount || '0'}}" /-->
+        <!--price fill wr-class="pay-item__right font-bold" price="{{order.totalAmount || '0'}}" /-->
         <!--/view-->
         <view class="pay-item">
           <text>开始时间</text>
@@ -86,8 +86,8 @@
               <price fill decimalSmaller price="{{order.couponAmount}}" />
             </block>
             <text wx:else>无可用</text-->
-            <!-- <t-icon name="chevron-right" size="32rpx" color="#BBBBBB" /> -->
-          <!--/view>
+        <!-- <t-icon name="chevron-right" size="32rpx" color="#BBBBBB" /> -->
+        <!--/view>
         </view>
         <view class="pay-item">
           <text>{{isPaid ? '实付' : '应付'}}</text>
@@ -95,8 +95,8 @@
         </view-->
       </view>
       <!--me-->
-    
-    <!--/order-card-->
+
+      <!--/order-card-->
     </view>
 
     <view style="width: 100%; height: 72rpx; display: flex; align-items: center; justify-content: center;font-size: 32rpx; line-height: 36rpx;">
@@ -252,7 +252,7 @@
               <text class="pay-item__right">{{item.isComplete == 1 ? '是' : '否'}}</text>
             </view>
           </block>
-          
+
         </view>
 
       </view>

@@ -128,6 +128,85 @@ Page({
     return
   },
 
+  onAccept: function (event) {
+    const token = wx.getStorageSync('token');
+    const ogItem = event.currentTarget.dataset.order.rawData;
+    ogItem.status = 1;
+    wx.request({
+      url: `https://1.95.59.208:8011/emp/updateOnGoingTable`,
+      method: 'PUT',
+      header: {
+        'Authorization': token
+      },
+      data: ogItem,
+      success: (res) => {
+        wx.showToast({
+          title: '受理成功',
+          icon: 'success',
+          duration: 2000 // 提示框显示时间，单位为毫秒
+        });
+        this.setData({
+          orderList: []
+        });
+        this.getOrderList(this.data.curTab);
+      }
+    })
+  },
+
+  // 点击拒绝按钮的事件处理函数
+  onReject: function (event) {
+    const token = wx.getStorageSync('token');
+    const ogItem = event.currentTarget.dataset.order.rawData;
+    ogItem.status = 2;
+    wx.request({
+      url: `https://1.95.59.208:8011/emp/updateOnGoingTable`,
+      method: 'PUT',
+      header: {
+        'Authorization': token
+      },
+      data: ogItem,
+      success: (res) => {
+        wx.showToast({
+          title: '拒绝成功',
+          icon: 'success',
+          duration: 2000 // 提示框显示时间，单位为毫秒
+        });
+        this.setData({
+          orderList: []
+        });
+        this.getOrderList(this.data.curTab);
+      }
+    })
+  },
+
+  // 点击接单维修完成后的事件处理
+  onComplete: function (event) {
+    const token = wx.getStorageSync('token');
+    const ogItem = event.currentTarget.dataset.order.rawData;
+    ogItem.status = 3;
+    wx.request({
+      url: `https://1.95.59.208:8011/emp/updateOnGoingTable`,
+      method: 'PUT',
+      header: {
+        'Authorization': token
+      },
+      data: ogItem,
+      success: (res) => {
+        wx.showToast({
+          title: '提交完成',
+          icon: 'success',
+          duration: 2000 // 提示框显示时间，单位为毫秒
+        });
+        this.setData({
+          orderList: []
+        });
+        this.getOrderList(this.data.curTab);
+      }
+    })
+  },
+
+
+
   getOrderList(statusCode = -1, reset = false) {
     const params = {
       parameter: {
@@ -140,54 +219,54 @@ Page({
       listLoading: 1
     });
     return fetchOrders(params).then(res => {
-      //res.data.orders
-      console.log('fetchOrders() finished')
-      console.log(res)
-      this.page.num++;
-      let orderList = [];
-      if (res && res.data && res.data.orders) {
-        orderList = (res.data.orders || []).map((order) => {
-          return {
-            rawData: order,
-            assignId: order.assignId,
-            createTime: order.createTime,
-            endTime: order.endTime,
-            mdoid: order.mdoid,
-            ogid: order.ogid,
-            receivedId: order.receivedId,
-            status: order.status,
-            goodsList: [{
-              title: "开始时间：" + order.createTime +
-                "\n任务进行ID：" + order.ogid +
-                "\n维修派工单ID：" + order.mdoid +
-                "\n任务分配者ID：" + order.assignId +
-                "\n任务目标者ID：" + order.receivedId +
-                "\n任务进行状态：" + this.data.repairStatus[order.status]
+        //res.data.orders
+        console.log('fetchOrders() finished')
+        console.log(res)
+        this.page.num++;
+        let orderList = [];
+        if (res && res.data && res.data.orders) {
+          orderList = (res.data.orders || []).map((order) => {
+            return {
+              rawData: order,
+              assignId: order.assignId,
+              createTime: order.createTime,
+              endTime: order.endTime,
+              mdoid: order.mdoid,
+              ogid: order.ogid,
+              receivedId: order.receivedId,
+              status: order.status,
+              goodsList: [{
+                title: "开始时间：" + order.createTime +
+                  "\n任务进行ID：" + order.ogid +
+                  "\n维修派工单ID：" + order.mdoid +
+                  "\n任务分配者ID：" + order.assignId +
+                  "\n任务目标者ID：" + order.receivedId +
+                  "\n任务进行状态：" + this.data.repairStatus[order.status]
                 //"\n结束时间：" + order.endTime
                 //"\n结束时间：" + (order.endTime ? order.endTime : "进行中"),
-            }, ],
-          }
-        })
-      }
-      return new Promise((resolve) => {
-        if (reset) {
+              }, ],
+            }
+          })
+        }
+        return new Promise((resolve) => {
+          if (reset) {
+            this.setData({
+              orderList: []
+            }, () => resolve());
+          } else resolve();
+        }).then(() => {
           this.setData({
-            orderList: []
-          }, () => resolve());
-        } else resolve();
-      }).then(() => {
-        this.setData({
-          orderList: this.data.orderList.concat(orderList),
-          listLoading: orderList.length > 0 ? 0 : 2,
+            orderList: this.data.orderList.concat(orderList),
+            listLoading: orderList.length > 0 ? 0 : 2,
+          });
         });
+      })
+      .catch((err) => {
+        this.setData({
+          listLoading: 3
+        });
+        return Promise.reject(err);
       });
-    })
-    .catch((err) => {
-      this.setData({
-        listLoading: 3
-      });
-      return Promise.reject(err);
-    });
 
     return request('/emp/empQueryOnGoingTable', 'GET', {}).then((res) => {
         console.log('请求员工数据成功', res);

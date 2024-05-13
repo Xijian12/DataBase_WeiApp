@@ -162,8 +162,9 @@ Page({
                 "\n维修派工单ID：" + order.mdoid +
                 "\n任务分配者ID：" + order.assignId +
                 "\n任务目标者ID：" + order.receivedId +
-                "\n任务进行状态：" + this.data.repairStatus[order.status] +
-                "\n结束时间：" + order.endTime,
+                "\n任务进行状态：" + this.data.repairStatus[order.status]
+                //"\n结束时间：" + order.endTime
+                //"\n结束时间：" + (order.endTime ? order.endTime : "进行中"),
             }, ],
           }
         })

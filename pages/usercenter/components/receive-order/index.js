@@ -11,7 +11,8 @@ import {
 
 Page({
   page: {
-    size: 5,
+    //size: 5,
+    size: 10000,
     num: 1,
   },
 
@@ -22,12 +23,12 @@ Page({
         key: -1,
         text: '全部'
       }, {
-        key: OrderStatus.COMPLETE,
+        key: 1,
         text: '已分配',
         info: ''
       },
       {
-        key: OrderStatus.PENDING_PAYMENT,
+        key: 0,
         text: '待分配',
         info: ''
       },
@@ -73,6 +74,7 @@ Page({
   },
 
   onReachBottom() {
+    return
     if (this.data.listLoading === 0) {
       this.getOrderList(this.data.curTab);
     }
@@ -127,8 +129,19 @@ Page({
     this.setData({
       listLoading: 1
     });
-    return request('/emp/queryDispatchOrder', 'GET', {}).then((res) => {
+    return request('/emp/queryDispatchOrder', 'GET', statusCode === -1 ? {pageSize: 10000} : {
+      pageSize: 10000,
+      isAssigned: statusCode,
+    }).then((res) => {
         console.log('请求接单数据成功', res);
+        for (let order of res.data.rows) {
+          console.log(order)
+          order.isAssigned = (order.empId && order.empType) ? 1 : 0
+          console.log("isAssigned=", order.isAssigned)
+        }
+        let orders = res.data.rows.filter(order => {
+          return true
+        })
         this.page.num++;
         let orderList = [];
         if (res && res.data) {
@@ -149,6 +162,7 @@ Page({
               createTime: order.createTime,
               updateTime: order.updateTime,
               vfi: order.vfi,
+              isAssigned: order.isAssigned,
               goodsList: [{
                 title: "开始时间：" + order.createTime +
                   "\n维修单编号：" + order.riid +
@@ -158,7 +172,8 @@ Page({
                   "\n总费用：" + order.totalComponentPrice +
                   "\n工时：" + order.workLength + "h" +
                   "\n工时单价：" + order.pricePerhour +
-                  "\n是否分配：" + (order.isComplete === 1 ? "已分配" : "未分配")
+                  "\n是否分配：" + (order.isAssigned == 1 ? "已分配" : "未分配")
+                  //"\n是否分配：" + (order.isComplete === 1 ? "已分配" : "未分配")
               }, ]
             }
           });
@@ -236,8 +251,8 @@ Page({
   onRefresh() {
     this.refreshList(this.data.curTab);
   },
-
-  onOrderCardTap(e) {
+  
+  onOrderCardTap__(e) {
     console.log("onOrderCardTap(e)...")
     console.log(e)
     const {
@@ -251,4 +266,45 @@ Page({
       url: `/pages/order/emp/order-detail/index?orderNo=${order.orderNo}`,
     });
   },
+
+  isApplyOrder: false,
+  onOrderCardTap(e) {
+    const {
+      order
+    } = e.currentTarget.dataset;
+    console.log('tap order ')
+    console.log(order)
+    const empData = wx.getStorageSync('empData')
+    console.log('empData', empData)
+    request("/emp/applyDispatchOrder", "PUT", JSON.stringify({
+      mdoid: order.mdoid,
+      workLength: order.workLength,
+      pricePerhour: order.pricePerhour,
+      riid: order.riid,
+      empId: empData.empId,
+      empType: empData.empType,
+      createTime: order.createTime,
+      updateTime: order.updateTime,
+    })).then(res => {
+      wx.showToast({
+        title: '接单成功',
+      })
+      this.refreshList(this.data.curTab)
+    })
+    .catch(res => {
+      wx.showToast({
+        title: '接单失败',
+        icon: 'error',
+      })
+      //this.refreshList(this.data.curTab)
+    })
+
+    this.isApplyOrder = false
+  },
+
+  onApplyOrder(e) {
+    this.isApplyOrder = true
+    //console.log('onApplyOrder(e)...')
+    //console.log(e.currentTarget.dataset)
+  }
 });

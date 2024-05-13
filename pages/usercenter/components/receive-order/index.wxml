@@ -18,6 +18,7 @@
       </view>
       <!-- 订单按钮栏 -->
       <order-button-bar order="{{order}}" bindrefresh="onRefresh" data-order="{{order}}" />
+      <button wx:if="{{order.isAssigned === 0}}" slot="more" bind:tap="onApplyOrder">接单</button>
     </order-card>
     <!-- 列表加载中/已全部加载 -->
     <load-more wx:if="{{!pullDownRefreshing}}" list-is-empty="{{!orderList.length}}" status="{{listLoading}}" bindretry="onReTryLoad">

@@ -6,6 +6,8 @@ import {
 } from '../../utils/request'
 import Toast from 'tdesign-miniprogram/toast/index';
 
+const repairStatus = ['未受理', '已受理', '已拒绝', '已完成', '中断受理']
+
 const menuData = [
   [{
     title: '积分',
@@ -86,21 +88,21 @@ const emporderTagInfos = [{
     title: '已完成',
     iconName: 'wallet',
     orderNum: 0,
-    tabType: 110,
+    tabType: 110 + repairStatus.indexOf('已完成'),
     status: 1,
   },
   {
     title: '未受理',
     iconName: 'comment',
     orderNum: 0,
-    tabType: 120,
+    tabType: 110 + repairStatus.indexOf('未受理'),
     status: 1,
   },
   {
     title: '已受理',
     iconName: 'package',
     orderNum: 0,
-    tabType: 130,
+    tabType: 110 + repairStatus.indexOf('已受理'),
     status: 1,
   },
 ];

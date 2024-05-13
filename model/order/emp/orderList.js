@@ -35,6 +35,47 @@ let data = {
   "total": 2
 }
 
+export function realGenEmpOrders(resData, params) {
+  const resp = {
+    data: {
+      pageNum: 1,
+      pageSize: 10,
+      totalCount: resData.total,
+      orders: resData.rows,
+      code: 'Success',
+      msg: null,
+      requestId: mockReqId(),
+      clientIp: mockIp(),
+      rt: 113,
+      success: true,
+    }
+  };
+  
+  const {
+    pageNum,
+    pageSize,
+    orderStatus
+  } = params.parameter;
+  // 实现筛选
+  if (orderStatus > -1) {
+    resp.data.orders = resp.data.orders.filter(
+      (order) => {
+        return order.status === orderStatus
+      }
+    );
+  }
+  resp.data.totalCount = resp.data.orders.length
+  // 实现分页
+  /*
+  resp.data.pageNum = pageNum;
+  resp.data.pageSize = pageSize;
+  resp.data.orders = resp.data.orders.slice(
+    (pageNum - 1) * pageSize,
+    pageNum * pageSize,
+  );*/
+  return resp;
+}
+
 export function realGenOrders(resData, params) {
   const resp = {
     data: {

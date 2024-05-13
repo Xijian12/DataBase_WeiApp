@@ -9,6 +9,8 @@ import {
   request
 } from '../../../../utils/request.js';
 
+const repairStatus = ['未受理', '已受理', '已拒绝', '已完成', '中断受理']
+
 Page({
   page: {
     size: 5,
@@ -23,17 +25,17 @@ Page({
         text: '全部'
       },
       {
-        key: OrderStatus.COMPLETE,
+        key: repairStatus.indexOf('已完成'),
         text: '已完成',
         info: ''
       },
       {
-        key: OrderStatus.PENDING_PAYMENT,
+        key: repairStatus.indexOf('未受理'),
         text: '未受理',
         info: ''
       },
       {
-        key: OrderStatus.PENDING_RECEIPT,
+        key: repairStatus.indexOf('已受理'),
         text: '已受理',
         info: ''
       },
@@ -51,6 +53,8 @@ Page({
 
   onLoad(query) {
     let status = parseInt(query.status);
+    status = status - 110
+    console.log("onLoad() status=" + status)
     status = this.data.tabs.map((t) => t.key).includes(status) ? status : -1;
     this.init(status);
     this.pullDownRefresh = this.selectComponent('#wr-pull-down-refresh');
@@ -135,6 +139,55 @@ Page({
     this.setData({
       listLoading: 1
     });
+    return fetchOrders(params).then(res => {
+      //res.data.orders
+      console.log('fetchOrders() finished')
+      console.log(res)
+      this.page.num++;
+      let orderList = [];
+      if (res && res.data && res.data.orders) {
+        orderList = (res.data.orders || []).map((order) => {
+          return {
+            rawData: order,
+            assignId: order.assignId,
+            createTime: order.createTime,
+            endTime: order.endTime,
+            mdoid: order.mdoid,
+            ogid: order.ogid,
+            receivedId: order.receivedId,
+            status: order.status,
+            goodsList: [{
+              title: "开始时间：" + order.createTime +
+                "\n任务进行ID：" + order.ogid +
+                "\n维修派工单ID：" + order.mdoid +
+                "\n任务分配者ID：" + order.assignId +
+                "\n任务目标者ID：" + order.receivedId +
+                "\n任务进行状态：" + this.data.repairStatus[order.status] +
+                "\n结束时间：" + order.endTime,
+            }, ],
+          }
+        })
+      }
+      return new Promise((resolve) => {
+        if (reset) {
+          this.setData({
+            orderList: []
+          }, () => resolve());
+        } else resolve();
+      }).then(() => {
+        this.setData({
+          orderList: this.data.orderList.concat(orderList),
+          listLoading: orderList.length > 0 ? 0 : 2,
+        });
+      });
+    })
+    .catch((err) => {
+      this.setData({
+        listLoading: 3
+      });
+      return Promise.reject(err);
+    });
+
     return request('/emp/empQueryOnGoingTable', 'GET', {}).then((res) => {
         console.log('请求员工数据成功', res);
         this.page.num++;
